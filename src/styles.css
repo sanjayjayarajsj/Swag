@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Lenis smooth scroll ---------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    background-color: #09090b;
+    color: #fafafa;
+    scrollbar-gutter: stable;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* `clip` (not `hidden`) so the page never scrolls sideways but sticky/pin keep working */
+  html,
+  body {
+    overflow-x: clip;
+  }
+  html.is-locked {
+    overflow: hidden;
+  }
+  body {
+    min-height: 100svh;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.75);
+    outline-offset: 3px;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3f3f46;
+  }
+}
+
+/* ---------- Shared building blocks (keeps every section consistent) ---------- */
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-12;
+  }
+  .section-y {
+    @apply py-20 sm:py-28 lg:py-32;
+  }
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-widest text-neutral-400 sm:text-xs;
+  }
+  .h-section {
+    @apply text-3xl font-semibold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl;
+  }
+  .lead {
+    @apply text-sm font-normal leading-relaxed text-neutral-400 sm:text-base;
+  }
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3 text-xs font-medium uppercase tracking-wider transition duration-200 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-white text-ink hover:bg-neutral-200;
+  }
+  .btn-ghost {
+    @apply btn border border-white/15 text-white hover:border-white/30 hover:bg-white/10;
+  }
+  .chip {
+    @apply rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-normal text-neutral-300;
+  }
+  .icon-btn {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-neutral-300 transition hover:border-white/30 hover:text-white active:scale-95 disabled:opacity-30;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ---------- Scroll reveal (see reveal.directive.ts) ---------- */
+html.js .reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
